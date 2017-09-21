@@ -5,9 +5,12 @@ var bravery = 6;
 
 var goblinbravery = 5;
 var goblinhealth = 10;
+var goblinfullhealth = 10;
+//var goblincurrenthealth = Math.floor(goblinfullhealth-goblinhealth);
+//let goblinlifebar = Math.floor((goblinhealth/goblinfullhealth*100);
 //var goblincurrenthealth = {goblinhealth-enemydmg};
 
-var currentwounds = 30;
+var currenthealth = 30;
 
 
 function monitorHealth() {
@@ -42,6 +45,7 @@ function printNumber(number) {
     placeholder.innerHTML = number;
 }
 
+//Lore of Light Spell//
 var b1 = document.getElementById('b1');
 
 b1.onclick = function() {
@@ -54,17 +58,31 @@ b1.onclick = function() {
     }
 };
 
+//Lore of Heavens Spell//
 var b2 = document.getElementById('b2');
 
+//Does d3 damage to enemy, roll d6, if 6, repeat//
 b2.onclick = function() {
-    var result = d6.roll() + d6.roll();
+     var result = d6.roll() + d6.roll();
+     var d3damage = d3.roll();
     printNumber(result);
-    if (result < 8) {
+    if (result < 6) {
         $("#castResult").html("Failed to cast!");
     } else {
         $("#castResult").html("Successful cast!");
+        goblinhealth -= d3damage;
+        console.log(d3damage +" damage");
+        result = d6.roll();
+        if (result >= 6) {
+          goblinhealth -= d3damage;
+            console.log(d3damage + " damage chain");
+        }
+        console.log (goblinhealth);
+        //healthMonitor();
     }
 };
+
+//Lore of Metal Spell//
 var b3 = document.getElementById('b3');
 
 b3.onclick = function() {
@@ -77,18 +95,25 @@ b3.onclick = function() {
     }
 };
 
+//Lore of Life Spell//
 var b4 = document.getElementById('b4');
 
+//Healing Spell//
 b4.onclick = function() {
     var result = d6.roll() + d6.roll();
     printNumber(result);
-    if (result < 8) {
+    if (result < 5) {
         $("#castResult").html("Failed to cast!");
     } else {
         $("#castResult").html("Successful cast!");
+          currenthealth += d6.roll();
+          console.log("Healed " + d6.roll());
+        console.log (currenthealth);
+        //healthMonitor();
     }
 };
 
+//Lore of Beasts Spell//
 var b5 = document.getElementById('b5');
 
 b5.onclick = function() {
@@ -101,31 +126,46 @@ b5.onclick = function() {
     }
 };
 
+//Lore of Fire Spell//
 var b6 = document.getElementById('b6');
 
+//Most basic damage spell against enemy, different damage levels//
 b6.onclick = function() {
     var result = d6.roll() + d6.roll();
+    var adamage =1;
+    var d3damage = d3.roll();
+    var d6damage = d6.roll();
     printNumber(result);
     if (result < 5) {
         $("#castResult").html("Failed to cast!");
     } else {
         $("#castResult").html("Successful cast!");
         result = d6.roll();
+        //
         if (result <= 2) {
           goblinhealth -= 1;
-            console.log("1 damage");
-        } else if (result <= 4) {
-          goblinhealth -= d3.roll();
-            console.log("d3 damage");
-        } else {
-          goblinhealth -= d6.roll();
-            console.log("d6 damage");
+            console.log(adamage + " damage");
+            $("#castDamage").html(adamage + " damage");
+        } 
+        //
+        else if (result <= 4) {
+          goblinhealth -= d3damage;
+            console.log(d3damage + " damage");
+            $("#castDamage").html(d3damage + " damage");
         }
-        console.log (goblinhealth);
-        healthMonitor();
+        //
+        else {
+          goblinhealth -= d6damage;
+            console.log(d6damage + " damage");
+            $("#castDamage").html(d6damage + " damage");
+        }
+        console.log (goblinhealth + " Health Remaining");
+        $("#goblinHealth").width(goblinhealth + "%" );
+        //healthMonitor();
     }
 };
 
+//Lore of Shadow Spell//
 var b7 = document.getElementById('b7');
 
 b7.onclick = function() {
@@ -138,6 +178,7 @@ b7.onclick = function() {
     }
 };
 
+//Lore of Death Spell//
 var b8 = document.getElementById('b8');
 
 b8.onclick = function() {
